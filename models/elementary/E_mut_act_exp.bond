@@ -1,0 +1,22 @@
+species S = ssynR -> (S | R);
+
+species R = degradeR -> 0
+          + stayR -> R;
+
+species E = phosphorylateE -> EP;
+          
+species EP = dephosphorylateEP -> E
+           + epsynR -> (EP | R);
+           
+kinetic law MM1(k,km; R,E) = (k*R*E) / (km + E);
+kinetic law MM2(k,km; EP) = (k*EP) / (km + EP);
+
+affinity network N(k0, k1, k2, k3, k4, j3, j4) = {
+    epsynR at rate MA(k0);
+    ssynR at rate MA(k1);
+    degradeR at rate MA(k2);
+    stayR || phosphorylateE at rate MM1(k3,j3);
+    dephosphorylateEP at rate MM2(k4,j4);
+}
+
+process Pi = [0.0] S || [0.0] R || [1.0] E || [0.0] EP with network N(0.4,0.01,1,1,0.2,0.05,0.05);

@@ -1,0 +1,16 @@
+species S = ssynR -> (S | R)
+          + ssynX -> (S | X);
+
+species R = degradeR -> 0;
+
+species X = degradeX -> 0
+          + stayX -> X;
+
+affinity network N(k1, k2, k3, k4) = {
+    ssynR at rate MA(k1);
+    ssynX at rate MA(k3);
+    degradeR || stayX at rate MA(k2);
+    degradeX at rate MA(k4);
+}
+
+process Pi = [0] S || [0] X || [1.0] R with network N(2,2,1,1);

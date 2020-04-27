@@ -1,0 +1,15 @@
+species A = asynR -> (R | A);
+
+species S = ssynR -> (S | R);
+
+species R = degradeR -> 0;
+
+kinetic law CL(k; A) = k*A;
+
+affinity network N(a, s, r) = {
+    asynR at rate CL(a);
+    ssynR at rate MA(s);
+    degradeR at rate MA(r);
+}
+
+process Pi = [1.0] A || [1.0] S || [0] R with network N(0.01, 1, 5);

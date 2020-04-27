@@ -1,0 +1,12 @@
+species S = synthR -> (S | R);
+
+species R = decayR -> 0;
+
+kinetic law CL(a, k; X) = a + k*X;
+
+affinity network N(a, s, r) = {
+    synthR at rate CL(a,s);
+    decayR at rate MA(r);
+}
+
+process Pi = [1.0] S || [0] R with network N(0.01, 1, 5);

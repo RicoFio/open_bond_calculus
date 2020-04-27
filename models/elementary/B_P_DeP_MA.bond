@@ -1,0 +1,12 @@
+species S = kinaseR -> S;
+
+species R = phosphorylate -> RP;
+
+species RP = dephosphorylate -> R;
+
+affinity network N(k, m) = {
+    phosphorylate || kinaseR at rate MA(k);
+    dephosphorylate at rate MA(m);
+}
+
+process Pi = [1.0] S || [1.0] R || [0.0] RP with network N(1.1,1.2);

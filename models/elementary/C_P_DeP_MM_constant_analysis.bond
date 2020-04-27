@@ -1,0 +1,19 @@
+species S = kinaseR -> S;
+
+species R = phosphorylate -> RP;
+
+species RP = dephosphorylate -> R;
+
+species KM1 = stayKM1 -> KM1;
+
+species KM2 = stayKM2 -> KM2;
+
+kinetic law MM1(k; S,R,km) = (k*S*R) / (km + R);
+kinetic law MM2(k; RP,km)  = (k*RP) / (km + RP);
+
+affinity network N(k1, k2) = {
+    kinaseR || phosphorylate, stayKM1 at rate MM1(k1);
+    dephosphorylate, stayKM2 at rate MM2(k2);
+}
+
+process Pi = [1.0] S || [1.0] R || [0.0] RP || [0.05] KM1 || [0.05] KM2 with network N(1,1);

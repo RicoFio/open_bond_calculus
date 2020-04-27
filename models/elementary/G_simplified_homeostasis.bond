@@ -1,0 +1,14 @@
+species S = sdegR -> S;
+
+species R = decayR -> 0
+          + genR -> (R | R);
+
+kinetic law G(f,u,v,J,K; R) = 
+      2*u*K*f / (v*R-u+v*J*R+u*K+((v*R-u+v*J*R+u*K)**2-4*(v*R-u)*u*K)**0.5);
+
+affinity network N(k0, k2, k3, k4, j3, j4) = {
+    sdegR || decayR at rate MA(k2);
+    genR at rate G(k0,k3,k4,j3,j4);
+}
+
+process Pi = [1.0] S || [0.0] R with network N(1,1,0.5,1,0.01,0.01);

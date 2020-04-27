@@ -1,0 +1,14 @@
+species E = e -> E;
+
+species S = s -> P;
+
+species P = p -> 0;
+
+kinetic law MM(k,km; S,E) = (k*S*E) / (km + E);
+
+affinity network M1(k1,km1,k2) = {
+  s || e at rate MM(k1,km1);
+  p at rate MA(k2);
+}
+
+process Pi = [0.5] E || [1.0] S || [0.0] P with network M1(1.0, 0.1, 0.1);

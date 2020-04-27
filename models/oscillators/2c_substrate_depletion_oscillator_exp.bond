@@ -1,0 +1,26 @@
+species S = ssynthX -> (S | X);
+
+species R = stayR -> R
+          + decayR -> 0;
+
+species X = xturnR -> R;
+
+species E = phosphE -> EP;
+
+species EP = stayEP -> EP
+           + dephosphEP -> E;
+           
+kinetic law MM1(k,km; R,E) = (k*R*E) / (km + E);
+kinetic law MM2(k,km; EP) = (k*EP) / (km + EP);
+
+affinity network N(k01, k0, k1, k2, k3, k4, km3, km4) = {
+    ssynthX at rate MA(k1);
+    decayR at rate MA(k2);
+    xturnR at rate MA(k01);
+    xturnR || stayEP at rate MA(k0);
+    stayR || phosphE at rate MM1(k3,km3);
+    dephosphEP at rate MM2(k4,km4);
+}
+
+process Pi = [0.2] S || [0.0] X || [1.0] E || [0.0] EP || [0.0] R with network N(0.01, 0.4, 1   , 1, 
+                          1   , 0.3, 0.05, 0.05);

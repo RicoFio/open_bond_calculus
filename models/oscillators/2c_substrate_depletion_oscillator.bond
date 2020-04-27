@@ -1,0 +1,17 @@
+species S = ssynX -> (S | X);
+
+species R = stayR -> R
+          + degradeR -> 0;
+
+species X = xturnR -> R;
+   
+kinetic law G(f,u,v,J,K; R,X) = (f * 2*u*R*K*X) / (v - u*R + v*J + u*R*K + ((v - u*R + v*J + u*R*K)**2 - 4*(v - u*R) * u*R *K)**0.5);
+
+affinity network N(k01, k0, k1, k2, k3, k4, j3, j4) = {
+    ssynX at rate MA(k1);
+    degradeR at rate MA(k2);
+    xturnR at rate MA(k01);
+    stayR || xturnR at rate G(k0,k3,k4,j3,j4);
+}
+
+process Pi = [0.2] S || [0.0] X || [0.0] R with network N(0.01,0.4,1,1,1,0.3,0.05,0.05);

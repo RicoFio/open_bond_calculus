@@ -1,0 +1,34 @@
+species A = asynX -> (A | X);
+
+species S = ssynX -> (S | X);
+
+species X = stayX -> X
+          + degradeX -> 0;
+
+species Y = phosphorylateY -> YP;
+
+species YP = stayYP -> YP
+           + dephosphorylateYP -> Y;     
+
+species R = phosphorylateR -> RP;
+
+species RP = stayRP -> RP
+           + dephosphorylateRP -> R;
+
+kinetic law MM1(k,km; S,E) = (k*S*E) / (km + E);
+kinetic law MM2(k,km; EP) = (k*EP) / (km + EP);
+
+affinity network N(k0, k1, k2, k21, k3, k4, k5, k6, km3, km4, km5, km6) = {
+    asynX at rate MA(k0);
+    ssynX at rate MA(k1);
+    degradeX at rate MA(k2);
+    stayX || phosphorylateY at rate MM1(k3, km3);
+    dephosphorylateYP at rate MM2(k4, km4);
+    stayYP || phosphorylateR at rate MM1(k5, km5);
+    dephosphorylateRP at rate MM2(k6, km6);
+    stayRP || degradeX at rate MA(k21);
+}
+
+process Pi = [1.0] A || [2.0] S || [0] X || [1.0] Y || [0.0] YP || [1.0] R || [0.0] RP with network N(0   , 1   , 0.01, 10.0,
+          0.1 , 0.2 , 0.1 , 0.05,
+          0.01, 0.01, 0.01, 0.01);
