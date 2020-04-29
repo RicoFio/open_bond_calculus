@@ -4,6 +4,8 @@ species R = phosphorylate -> RP;
 
 species RP = dephosphorylate -> R;
 
+kinetic law MA(k; A,B) = k*A*B;
+
 affinity network N(k, m) = {
     phosphorylate || kinaseR at rate MA(k);
     dephosphorylate at rate MA(m);

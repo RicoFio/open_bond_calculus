@@ -1,0 +1,13 @@
+species SK = kinaseR -> SK;
+species SP = phosphataseR -> SP;
+species R  = phosphorylate -> RP; 
+species RP = dephosphorylate -> R;
+
+kinetic law MM(k,km; S,E) = (k*E*S) / (km + S);
+
+affinity network N(k1, k2, km1, km2) = { 
+    phosphorylate || kinaseR at rate MM(k1,km1); 
+    dephosphorylate || phosphataseR at rate MM(k2,km2);
+}
+
+process Pi = [1.0] SK || [1.0] SP || [1.0] R || [0.0] RP with network N(1,1,0.05,0.05);

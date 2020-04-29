@@ -1,0 +1,4 @@
+load "/lbuc/hostnotebooks/notebooks/models/example.bond"
+load "/lbuc/hostnotebooks/models/models/elementary/A_Synthesis_and_Degeneration.bond"
+load "/lbuc/hostnotebooks/models/models/linear.bond"
+load "/lbuc/hostnotebooks/notebooks/models/example.bond"
